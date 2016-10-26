@@ -129,7 +129,8 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       "isFullScreenSupported": false,
       "isVideoFullScreenSupported": false,
       "isFullWindow": false,
-      "autoPauseDisabled": false
+      "autoPauseDisabled": false,
+      "loopStartEnd": [0, 100]
     };
 
     this.init();
@@ -456,6 +457,14 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
         this.skin.updatePlayhead(currentPlayhead, duration, buffered);
       } else {
         this.state.queuedPlayheadUpdate = [currentPlayhead, duration, buffered];
+      }
+
+      if (videoId == OO.VIDEO.MAIN) {
+        var start = duration * this.state.loopStartEnd[0] / 100;
+        var end = duration * this.state.loopStartEnd[1] / 100;
+        if (currentPlayhead < start || currentPlayhead > end) {
+          this.seek(start);
+        }
       }
     },
 
@@ -1455,6 +1464,10 @@ OO.plugin("Html5Skin", function (OO, _, $, W) {
       if(this.state.mainVideoAspectRatio > 0) {
         this.state.mainVideoInnerWrapper.css("padding-top", this.state.mainVideoAspectRatio+"%");
       }
+    },
+
+    updateLoopPositions: function (values) {
+      this.state.loopStartEnd = values;
     }
   };
 

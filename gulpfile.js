@@ -86,10 +86,10 @@ function buildJS(file, hash, watch, ugly, sourcemap, debug, externalReact) {
 }
 
 // Build All
-gulp.task('build', ['browserify', 'browserify:min', 'sass', 'sass:min', 'assets', 'pages']);
+gulp.task('build', ['browserify', 'browserify:min', 'sass', 'sass:min', 'assets', 'pages', 'copy']);
 
 // Build Watch
-gulp.task('build:watch', ['watchify', 'watchify:min', 'sass', 'sass:min', 'assets', 'pages']);
+gulp.task('build:watch', ['watchify', 'watchify:min', 'sass', 'sass:min', 'assets', 'pages', 'copy']);
 
 // Browserify JS
 gulp.task('browserify', function() {
@@ -179,6 +179,12 @@ gulp.task('assets', function () {
 // HTML pages
 gulp.task('pages', function () {
   gulp.src(['iframe.html', 'amp_iframe.html'])
+    .pipe(gulp.dest('./build'));
+});
+
+// Extra files
+gulp.task('copy', function () {
+  gulp.src(['node_modules/rc-slider/assets/index.css'])
     .pipe(gulp.dest('./build'));
 });
 

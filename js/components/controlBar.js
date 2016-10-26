@@ -6,6 +6,7 @@ var React = require('react'),
     CONSTANTS = require('../constants/constants'),
     ClassNames = require('classnames'),
     ScrubberBar = require('./scrubberBar'),
+    LoopSlider = require('rc-slider'),
     Slider = require('./slider'),
     Utils = require('./utils'),
     Popover = require('../views/popover'),
@@ -158,6 +159,10 @@ var ControlBar = React.createClass({
       this.toggleCaptionPopover();
       this.closeQualityPopover();
     }
+  },
+
+  handleLoopSliderChange: function (values) {
+    this.props.controller.updateLoopPositions(values);
   },
 
   //TODO(dustin) revisit this, doesn't feel like the "react" way to do this.
@@ -472,6 +477,11 @@ var ControlBar = React.createClass({
     return (
       <div className={controlBarClass} style={controlBarStyle} onMouseUp={this.handleControlBarMouseUp} onTouchEnd={this.handleControlBarMouseUp}>
         <ScrubberBar {...this.props} />
+        <div className="oo-scrubber-bar-container">
+          <div className="oo-scrubber-bar-padding">
+            <LoopSlider className="oo-scrubber-bar" range allowCross={false} value={this.props.controller.state.loopStartEnd} onChange={this.handleLoopSliderChange} />
+          </div>
+        </div>
 
         <div className="oo-control-bar-items-wrapper">
           {controlBarItems}
